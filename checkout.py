@@ -1,8 +1,11 @@
-"""Demo checkout module, buggy head: discounts and rounds each line separately."""
+"""Demo checkout module, fixed head (refactor that still satisfies checkout-rounding@1)."""
 
 
 def total_cents(prices_cents: list[int], discount_percent: int) -> int:
-    total = 0
+    subtotal = 0
     for price in prices_cents:
-        total += (price * (100 - discount_percent) + 50) // 100
-    return total
+        subtotal += price
+    discounted, remainder = divmod(subtotal * (100 - discount_percent), 100)
+    if remainder >= 50:
+        discounted += 1
+    return discounted
